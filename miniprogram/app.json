@@ -1,0 +1,35 @@
+{
+  "pages": ["pages/music/music", "pages/blog/blog", "pages/me/me"],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#d43c33",
+    "navigationBarTitleText": "追哥小岛",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#474747",
+    "selectedColor": "#d43c43",
+    "list": [
+      {
+        "pagePath": "pages/music/music",
+        "text": "音乐",
+        "iconPath": "images/music.png",
+        "selectedIconPath": "images/music-actived.png"
+      },
+      {
+        "pagePath": "pages/blog/blog",
+        "text": "发现",
+        "iconPath": "images/blog.png",
+        "selectedIconPath": "images/blog-actived.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-actived.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}
