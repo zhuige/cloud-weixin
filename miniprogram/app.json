@@ -1,5 +1,11 @@
 {
-  "pages": ["pages/music/music", "pages/blog/blog", "pages/me/me"],
+  "pages": [
+    "pages/music/music",
+    "pages/blog/blog",
+    "pages/me/me",
+    "pages/musicList/musicList",
+    "pages/player/player"
+  ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",

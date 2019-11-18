@@ -6,27 +6,26 @@ cloud.init();
 const db = cloud.database();
 
 const rp = require('request-promise');
-const URL = 'http://musicapi.xiecheng.live/personalized';
+const URL = 'http://musicapi.xiecheng.live/playlist/detail?id=';
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const playList = await rp(URL).then(res => {
-    return JSON.parse(res).result;
+  const playList = await rp(URL + event.id).then(res => {
+    return JSON.parse(res).playlist;
   });
-  for (let i = 0, len = playList.length; i < len; i++) {
-    await db
-      .collection('playList')
-      .add({
-        data: {
-          ...playList[i],
-          createTime: db.serverDate()
-        }
-      })
-      .then(res => {
-        console.log('插入成功');
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  console.log(playList);
+  await db
+    .collection('musicList')
+    .add({
+      data: {
+        ...playList
+      }
+    })
+    .then(res => {
+      console.log('插入成功');
+    })
+    .catch(err => {
+      console.log(err);
+      console.log('数据库失败');
+    });
 };

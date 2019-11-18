@@ -22,7 +22,6 @@ Page({
     playList: [],
     isNone: false
   },
-
   _getList() {
     wx.showLoading({
       title: '加载中'
@@ -31,6 +30,7 @@ Page({
       .callFunction({
         name: 'music',
         data: {
+          $url: 'playList',
           start: this.data.playList.length,
           count: MAX_LIMIT
         }
@@ -91,7 +91,7 @@ Page({
    */
   onReachBottom: function() {
     !this.data.isNone && this._getList();
-  },
+  }, 
 
   /**
    * 用户点击右上角分享
