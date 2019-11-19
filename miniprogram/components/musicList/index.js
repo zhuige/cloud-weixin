@@ -20,11 +20,12 @@ Component({
   methods: {
     onSelect(e) {
       const id = e.currentTarget.dataset.musicid;
+      const index = e.currentTarget.dataset.index;
       this.setData({
         playingId: id
       });
       wx.navigateTo({
-        url: '../../pages/player/player?musicId=' + id
+        url: '../../pages/player/player?musicId=' + id + '&index=' + index
       });
     }
   }

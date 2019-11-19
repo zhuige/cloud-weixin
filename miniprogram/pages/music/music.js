@@ -8,46 +8,62 @@ Page({
     swiperList: [
       {
         url:
-          "http://p1.music.126.net/oeH9rlBAj3UNkhOmfog8Hw==/109951164169407335.jpg"
+          'http://p1.music.126.net/oeH9rlBAj3UNkhOmfog8Hw==/109951164169407335.jpg'
       },
       {
         url:
-          "http://p1.music.126.net/xhWAaHI-SIYP8ZMzL9NOqg==/109951164167032995.jpg"
+          'http://p1.music.126.net/xhWAaHI-SIYP8ZMzL9NOqg==/109951164167032995.jpg'
       },
       {
         url:
-          "http://p1.music.126.net/Yo-FjrJTQ9clkDkuUCTtUg==/109951164169441928.jpg"
+          'http://p1.music.126.net/Yo-FjrJTQ9clkDkuUCTtUg==/109951164169441928.jpg'
       }
     ],
     playList: [],
     isNone: false
   },
-  // async test() {
-
-  //   await wx.cloud
-  //     .callFunction({
-  //       name: "getPlayList",
-  //       data: {
-  //         id: 2555625890
-  //       }
-  //     })
-  //     .then(res => {
-  //       console.log("成功");
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       console.log("数据库出错");
-  //     });
-  // },
+  async test() {
+    let arr = [];
+    await wx.cloud
+      .callFunction({
+        name: 'getAllMusicList',
+        data: {
+          id: 3020182385
+        }
+      })
+      .then(res => {
+        let rearr = res.result.data[0].tracks;
+        for (let i = 0; i < rearr.length; i++) {
+          arr.push(rearr[i].id);
+        }
+      });
+    console.log(arr);
+    // for (let i = 0; i < arr.length; i++) {
+    //   await wx.cloud
+    //     .callFunction({
+    //       name: 'getPlayList',
+    //       data: {
+    //         id: arr[i]
+    //       }
+    //     })
+    //     .then(res => {
+    //       console.log('成功');
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //       console.log('数据库出错');
+    //     });
+    // }
+  },
   _getList() {
     wx.showLoading({
-      title: "加载中"
+      title: '加载中'
     });
     wx.cloud
       .callFunction({
-        name: "music",
+        name: 'music',
         data: {
-          $url: "playList",
+          $url: 'playList',
           start: this.data.playList.length,
           count: MAX_LIMIT
         }
