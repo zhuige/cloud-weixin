@@ -7,4 +7,7 @@
         <view class='detail-nm'>{{listInfo.name}}</view>
     </view>
 </view>
-<j-musicList musicList="{{musicList}}"></j-musicList>
+
+
+
+<j-musicList musicList="{{musicList}}" playListId="{{listInfo.playListId}}"></j-musicList>

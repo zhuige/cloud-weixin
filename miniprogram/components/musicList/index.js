@@ -4,7 +4,10 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    musicList: Array
+    musicList: Array,
+    playListId: {
+      type: [String, Number]
+    }
   },
 
   /**
@@ -25,7 +28,13 @@ Component({
         playingId: id
       });
       wx.navigateTo({
-        url: '../../pages/player/player?musicId=' + id + '&index=' + index
+        url:
+          '../../pages/player/player?musicId=' +
+          id +
+          '&index=' +
+          index +
+          '&playListId=' +
+          this.properties.playListId
       });
     }
   }

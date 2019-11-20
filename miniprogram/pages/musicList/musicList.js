@@ -1,4 +1,8 @@
 // miniprogram/pages/musicList/musicList.js
+let playListId = '';
+let limit = 20;
+let star = 0;
+let musicList = [];
 Page({
   /**
    * 页面的初始数据
@@ -12,10 +16,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    playListId = options.playListId;
+    let obj = wx.getStorageSync('musicList' + playListId);
+
+    if (obj) {
+      musicList = obj.musicList;
+      this.setData({
+        listInfo: obj.listInfo
+      });
+      this.setMusicList();
+    } else {
+      this.getMusicList();
+    }
+  },
+  setMusicList() {
+    let arr = [];
+    for (let i = 0; i < limit; i++) {
+      arr.push(musicList[star + i]);
+    }
+    this.setData({
+      musicList: this.data.musicList.concat(arr)
+    });
+  },
+  getMusicList() {
     wx.showLoading({
       title: '加载中...'
     });
-    const playListId = options.playListId;
     wx.cloud
       .callFunction({
         name: 'music',
@@ -26,19 +52,22 @@ Page({
       })
       .then(res => {
         const resp = res.result.data[0];
+        musicList = resp.tracks;
         this.setData({
-          musicList: resp.tracks,
           listInfo: {
             coverImgUrl: resp.coverImgUrl,
-            name: resp.name
+            name: resp.name,
+            playListId
           }
         });
-        this._setMusicList();
+        this.setMusicList();
+        this._setMusicListStorage();
         wx.hideLoading();
+        wx.stopPullDownRefresh();
       });
   },
-  _setMusicList() {
-    wx.setStorageSync('musicList', this.data.musicList);
+  _setMusicListStorage() {
+    wx.setStorageSync('musicList' + playListId, this.data);
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -63,12 +92,17 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {},
+  onPullDownRefresh: function() {
+    this.getMusicList();
+  },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {},
+  onReachBottom: function() {
+    star += limit;
+    this.setMusicList();
+  },
 
   /**
    * 用户点击右上角分享

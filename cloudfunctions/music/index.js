@@ -30,5 +30,18 @@ exports.main = async (event, context) => {
         return res;
       });
   });
+  //   app.router('musicUrl', async (ctx, next) => {
+  //     ctx.body = await cloud
+  //       .database()
+  //       .collection('musicUrl')
+  //       .where({
+  //         id: parseInt(event.id),
+  //         playListId: parseInt(event.playListId)
+  //       })
+  //       .get()
+  //       .then(res => {
+  //         return res;
+  //       });
+  //   });
   return app.serve();
 };

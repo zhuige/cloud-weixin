@@ -1,5 +1,6 @@
 {
     "usingComponents": {
         "j-musicList": "/components/musicList/index"
-    }
+    },
+    "enablePullDownRefresh": true
 }
