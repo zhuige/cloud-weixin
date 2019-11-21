@@ -5,7 +5,7 @@ let musicList = [];
 // 获取播放歌曲index
 let nowPlayingIndex = '';
 //获取全局背景音频  wx.getBackgroundAudioManager()
-const backgroundAudioManger = wx.getBackgroundAudioManager();
+const backgroundAudioManager = wx.getBackgroundAudioManager();
 Page({
   /**
    * 页面的初始数据
@@ -13,7 +13,8 @@ Page({
   data: {
     picUrl: '',
     isPlaying: false, //false不播放  true 正在播放,
-    isMove: false
+    isMove: false,
+    isLyricShow: false //歌词显示
   },
 
   /**
@@ -41,22 +42,22 @@ Page({
     let src =
       'https://music.163.com/song/media/outer/url?id=' + music.id + '.mp3';
     //背景音乐对象需要的src和title
-    if (!(backgroundAudioManger.src == src)) {
-      backgroundAudioManger.src = src;
-      backgroundAudioManger.title = music.name;
-      backgroundAudioManger.coverImgUrl = music.al.picUrl;
-      backgroundAudioManger.singer = music.ar[0].name;
-      backgroundAudioManger.epname = music.al.name;
+    if (!(backgroundAudioManager.src == src)) {
+      backgroundAudioManager.src = src;
+      backgroundAudioManager.title = music.name;
+      backgroundAudioManager.coverImgUrl = music.al.picUrl;
+      backgroundAudioManager.singer = music.ar[0].name;
+      backgroundAudioManager.epname = music.al.name;
     } else {
-      backgroundAudioManger.play();
+      backgroundAudioManager.play();
     }
   },
   togglePlaying() {
     //正在播放
     if (this.data.isPlaying) {
-      backgroundAudioManger.pause();
+      backgroundAudioManager.pause();
     } else {
-      backgroundAudioManger.play();
+      backgroundAudioManager.play();
     }
     this.setData({
       isPlaying: !this.data.isPlaying,
@@ -91,6 +92,24 @@ Page({
   setMoveFalse() {
     this.setData({
       isMove: false
+    });
+  },
+
+  onPause() {
+    this.setData({
+      isPlaying: false,
+      isMove: false
+    });
+  },
+  onPlay() {
+    this.setData({
+      isPlaying: true,
+      isMove: true
+    });
+  },
+  onChangeLyricShow() {
+    this.setData({
+      isLyricShow: !this.data.isLyricShow
     });
   },
   /**

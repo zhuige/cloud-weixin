@@ -7,7 +7,11 @@
     <view class=" player-disc {{isMove?'play': ''}}" bind:tap="onChangeLyricShow" hidden="{{isLyricShow}}">
         <image class="player-img rotation {{isPlaying?'':'rotation-paused'}}" src="{{picUrl}}"></image>
     </view>
-    <!-- 进度条 -->
+    <!-- 歌词 -->
+    <view hidden="{{!isLyricShow}}">
+        <j-lyric class="lyric" bind:tap="onChangeLyricShow" lyric="{{lyric}}" />
+        <!-- 进度条 -->
+    </view>
     <view class="progress-bar">
         <j-progress-bar bind:musicEnd="onNext" bind:timeUpdate="timeUpdate" bind:musicPlay="onPlay"
             bind:musicPause="onPause" isSame="{{isSame}}" />
@@ -18,14 +22,5 @@
         <text class="iconfont {{isPlaying?'icon-zanting1':'icon-bofang1'}}" bind:tap="togglePlaying"></text>
         <text class="iconfont icon-xiayigexiayishou" bind:tap="onNext"></text>
     </view>
+
 </view>
-<!-- <view class="player-info">
-    歌词
-    <x-lyric class="lyric" isLyricShow="{{!isLyricShow}}" bind:tap="onChangeLyricShow" lyric="{{lyric}}" />
-
-    
-   
-
-    
-
-</view> -->

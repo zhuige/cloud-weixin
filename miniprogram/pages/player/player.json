@@ -1,5 +1,6 @@
 {
     "usingComponents": {
-        "j-progress-bar": "/components/progress-bar/index"
+        "j-progress-bar": "/components/progress-bar/index",
+        "j-lyric": "/components/lyric/index"
     }
 }
