@@ -1,8 +1,9 @@
 // miniprogram/pages/musicList/musicList.js
-let playListId = '';
+let playListId = "";
 let limit = 20;
 let star = 0;
 let musicList = [];
+let lockReachBottom = false;
 Page({
   /**
    * 页面的初始数据
@@ -17,7 +18,7 @@ Page({
    */
   onLoad: function(options) {
     playListId = options.playListId;
-    let obj = wx.getStorageSync('musicList' + playListId);
+    let obj = wx.getStorageSync("musicList" + playListId);
 
     if (obj) {
       musicList = obj.musicList;
@@ -31,6 +32,10 @@ Page({
   },
   setMusicList() {
     let arr = [];
+    if (musicList.length - star < limit) {
+      limit = musicList.length - star;
+      lockReachBottom = true;
+    }
     for (let i = 0; i < limit; i++) {
       arr.push(musicList[star + i]);
     }
@@ -40,13 +45,13 @@ Page({
   },
   getMusicList() {
     wx.showLoading({
-      title: '加载中...'
+      title: "加载中..."
     });
     wx.cloud
       .callFunction({
-        name: 'music',
+        name: "music",
         data: {
-          $url: 'musicList',
+          $url: "musicList",
           id: playListId
         }
       })
@@ -67,7 +72,10 @@ Page({
       });
   },
   _setMusicListStorage() {
-    wx.setStorageSync('musicList' + playListId, this.data);
+    wx.setStorageSync("musicList" + playListId, {
+      listInfo: this.data.listInfo,
+      musicList
+    });
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -93,6 +101,11 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
+    star = 0;
+    this.setData({
+      musicList: []
+    });
+    lockReachBottom = false;
     this.getMusicList();
   },
 
@@ -100,8 +113,10 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-    star += limit;
-    this.setMusicList();
+    if (!lockReachBottom) {
+      star += limit;
+      this.setMusicList();
+    }
   },
 
   /**

@@ -23,77 +23,78 @@ Page({
     isNone: false
   },
   async test() {
+    wx.clearStorageSync();
     // 3020182385
-    let wrapperArr = [
-      2433860552,
-      3037534703,
-      2385384236,
-      2438292020,
-      308240095,
-      2610231104,
-      2287380795,
-      979321026,
-      2520739691,
-      2682044074,
-      2653342713,
-      988690134,
-      2181287762,
-      2447521196,
-      533526719,
-      2211589742,
-      924680166,
-      2403577681,
-      2482645921,
-      2556718079,
-      566050974,
-      626091187,
-      2555625890,
-      2185828257,
-      814812699
-    ];
+    // let wrapperArr = [
+    //   2433860552,
+    //   3037534703,
+    //   2385384236,
+    //   2438292020,
+    //   308240095,
+    //   2610231104,
+    //   2287380795,
+    //   979321026,
+    //   2520739691,
+    //   2682044074,
+    //   2653342713,
+    //   988690134,
+    //   2181287762,
+    //   2447521196,
+    //   533526719,
+    //   2211589742,
+    //   924680166,
+    //   2403577681,
+    //   2482645921,
+    //   2556718079,
+    //   566050974,
+    //   626091187,
+    //   2555625890,
+    //   2185828257,
+    //   814812699
+    // ];
 
-    for (let j = 0; j < wrapperArr.length; j++) {
-      let id = wrapperArr[j];
-      let arr = [];
-      let playListName = "";
-      await wx.cloud
-        .callFunction({
-          name: "getAllMusicList",
-          data: {
-            id
-          }
-        })
-        .then(res => {
-          let rearr = res.result.data[0].tracks;
-          playListName = res.result.data[0].name;
-          for (let i = 0; i < rearr.length; i++) {
-            arr.push({
-              id: rearr[i].id,
-              name: rearr[i].name
-            });
-          }
-        });
-      for (let i = 0; i < arr.length; i++) {
-        await wx.cloud
-          .callFunction({
-            name: "getPlayList",
-            data: {
-              playListName,
-              playListId: id,
-              name: arr[i].name,
-              id: arr[i].id
-            }
-          })
-          .then(res => {
-            console.log("成功");
-          })
-          .catch(err => {
-            console.log(err);
-            console.log("失败");
-          });
-      }
-      console.log("第" + (j + 1) + "次成功");
-    }
+    // for (let j = 0; j < wrapperArr.length; j++) {
+    //   let id = wrapperArr[j];
+    //   let arr = [];
+    //   let playListName = "";
+    //   await wx.cloud
+    //     .callFunction({
+    //       name: "getAllMusicList",
+    //       data: {
+    //         id
+    //       }
+    //     })
+    //     .then(res => {
+    //       let rearr = res.result.data[0].tracks;
+    //       playListName = res.result.data[0].name;
+    //       for (let i = 0; i < rearr.length; i++) {
+    //         arr.push({
+    //           id: rearr[i].id,
+    //           name: rearr[i].name
+    //         });
+    //       }
+    //     });
+    //   for (let i = 0; i < arr.length; i++) {
+    //     await wx.cloud
+    //       .callFunction({
+    //         name: "getPlayList",
+    //         data: {
+    //           playListName,
+    //           playListId: id,
+    //           name: arr[i].name,
+    //           id: arr[i].id
+    //         }
+    //       })
+    //       .then(res => {
+    //         console.log("成功");
+    //       })
+    //       .catch(err => {
+    //         console.log(err);
+    //         console.log("失败");
+    //       });
+    //   }
+    //   console.log("第" + (j + 1) + "次成功");
+    // }
 
     // for (let i = 0; i < arr.length; i++) {
     //   await wx.cloud
