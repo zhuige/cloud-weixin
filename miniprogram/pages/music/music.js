@@ -24,13 +24,28 @@ Page({
   },
 
   async test() {
-    wx.cloud
-      .callFunction({
-        name: "getPlayList"
-      })
-      .then(res => {
-        console.log(res);
-      });
+    // let arr = [];
+    // await wx.cloud
+    //   .callFunction({
+    //     name: "getPlayList"
+    //   })
+    //   .then(res => {
+    //     arr = res.result;
+    //   });
+    // console.log(arr);
+    // console.log(arr.length);
+    // for (let i = 0; i < arr.length; i++) {
+    //   await wx.cloud
+    //     .callFunction({
+    //       name: "getAllMusicList",
+    //       data: {
+    //         id: arr[i]
+    //       }
+    //     })
+    //     .then(res => {
+    //       console.log(i + 1 + "次成功");
+    //     });
+    // }
     // wx.clearStorageSync();
     // 3020182385
     // let wrapperArr = [
