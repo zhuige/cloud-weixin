@@ -5,7 +5,7 @@
         </swiper-item>
     </block>
 </swiper>
-<!-- <button bind:tap="test">点击我试试</button> -->
+<button bind:tap="test">点击我试试</button>
 <!-- <button bind:tap="test">点击我</button> -->
 <view class="playList-container">
     <block wx:for="{{playList}}" wx:key="{{_id}}">

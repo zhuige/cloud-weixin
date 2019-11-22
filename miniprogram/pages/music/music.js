@@ -22,8 +22,16 @@ Page({
     playList: [],
     isNone: false
   },
+
   async test() {
-    wx.clearStorageSync();
+    wx.cloud
+      .callFunction({
+        name: "getPlayList"
+      })
+      .then(res => {
+        console.log(res);
+      });
+    // wx.clearStorageSync();
     // 3020182385
     // let wrapperArr = [
     //   2433860552,
@@ -52,7 +60,6 @@ Page({
     //   2185828257,
     //   814812699
     // ];
-
     // for (let j = 0; j < wrapperArr.length; j++) {
     //   let id = wrapperArr[j];
     //   let arr = [];
@@ -95,7 +102,6 @@ Page({
     //   }
     //   console.log("第" + (j + 1) + "次成功");
     // }
-
     // for (let i = 0; i < arr.length; i++) {
     //   await wx.cloud
     //     .callFunction({

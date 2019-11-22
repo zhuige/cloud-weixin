@@ -1,38 +1,37 @@
 // 云函数入口文件
-const cloud = require('wx-server-sdk');
+const cloud = require("wx-server-sdk");
 
 cloud.init();
 
 const db = cloud.database();
 
-const rp = require('request-promise');
-const URL = 'http://musicapi.xiecheng.live/playlist/detail?id=';
-const URL2 = 'http://musicapi.xiecheng.live/song/url?id=';
-const URL3 = 'http://musicapi.xiecheng.live/lyric?id=';
+const rp = require("request-promise");
+const URL = "http://musicapi.xiecheng.live/playlist/detail?id=";
+const URL2 = "http://musicapi.xiecheng.live/song/url?id=";
+const URL3 = "http://musicapi.xiecheng.live/lyric?id=";
 const MAX_LIMIT = 100;
-const musicUrlCollection = db.collection('musicUrl');
+const musicUrlCollection = db.collection("musicUrl");
 // http://musicapi.xiecheng.live/song/url?id=
 // 云函数入口函数
 exports.main = async (event, context) => {
   const countResult = await musicUrlCollection.count();
   const total = countResult.total;
   const batchTimes = Math.ceil(total / MAX_LIMIT);
-  const tasks = [];
-
+  let tasks = [];
+  let arr = [];
   for (let i = 0; i < batchTimes; i++) {
-    let promise = musicUrlCollection
+    await musicUrlCollection
       .skip(i * MAX_LIMIT)
       .limit(MAX_LIMIT)
-      .get();
-    tasks.push(promise);
+      .get()
+      .then(res => {
+        tasks = tasks.concat(res.data);
+      });
   }
-  let list = [];
-  if (tasks.length > 0) {
-    list = (await Promise.all(tasks)).reduce((acc, cur) => {
-      return acc.data.concat(cur.data);
-    });
+  for (let i = 0; i < tasks.length; i++) {
+    arr.push(tasks[i].id);
   }
-  return list;
+  return arr;
 };
 
 // const playList = await rp(URL + event.id).then(res => {
