@@ -1,11 +1,14 @@
 // pages/player/player.js
-
+let playListId = 0;
 //获取musicList整个数组
 let musicList = [];
 // 获取播放歌曲index
 let nowPlayingIndex = '';
 //获取全局背景音频  wx.getBackgroundAudioManager()
 const backgroundAudioManager = wx.getBackgroundAudioManager();
+// 动画的bug 每次点击下一首的时候 backgroundAudioManager.play 都会执行下面的onPlay事件导致动画会秒变，
+// 使用一个锁来解决，如果点击下一首，锁住，运行完就解锁
+let lock = false;
 Page({
   /**
    * 页面的初始数据
@@ -21,10 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    let playListId = options.playListId;
-    this.setData({
-      isPlaying: false
-    });
+    playListId = options.playListId;
     nowPlayingIndex = options.index;
     musicList = wx.getStorageSync('musicList' + playListId).musicList;
     this._loadMusicDetail(300);
@@ -39,9 +39,14 @@ Page({
       picUrl: music.al.picUrl,
       isPlaying: true
     });
-    let src =
-      'https://music.163.com/song/media/outer/url?id=' + music.id + '.mp3';
-    //背景音乐对象需要的src和title
+    let src = '';
+    if (playListId === '792972988') {
+      src = music.src;
+    } else {
+      src =
+        'https://music.163.com/song/media/outer/url?id=' + music.id + '.mp3';
+    }
+    // 背景音乐对象需要的src和title
     if (!(backgroundAudioManager.src == src)) {
       backgroundAudioManager.src = src;
       backgroundAudioManager.title = music.name;
@@ -65,6 +70,7 @@ Page({
     });
   },
   onPrev() {
+    lock = true;
     nowPlayingIndex--;
     if (nowPlayingIndex < 0) {
       nowPlayingIndex = musicList.length - 1;
@@ -74,6 +80,7 @@ Page({
     else this._loadMusicDetail(0);
   },
   onNext() {
+    lock = true;
     nowPlayingIndex++;
     if (nowPlayingIndex == musicList.length) {
       nowPlayingIndex = 0;
@@ -87,6 +94,7 @@ Page({
       this.setData({
         isMove: true
       });
+      lock = false;
     }, time);
   },
   setMoveFalse() {
@@ -102,10 +110,17 @@ Page({
     });
   },
   onPlay() {
-    this.setData({
-      isPlaying: true,
-      isMove: true
-    });
+    //   如果点击的是下一首,动画不能秒变   else 点的是后台的play
+    if (lock) {
+      this.setData({
+        isPlaying: true
+      });
+    } else {
+      this.setData({
+        isPlaying: true,
+        isMove: true
+      });
+    }
   },
   onChangeLyricShow() {
     this.setData({

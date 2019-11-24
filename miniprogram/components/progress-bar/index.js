@@ -25,6 +25,13 @@ Component({
 
   lifetimes: {
     ready() {
+      if (typeof backgroundAudioManager.duration != 'undefined') {
+        this._setTime();
+      } else {
+        setTimeout(() => {
+          this._setTime();
+        }, 1000);
+      }
       this._getMovableDisWidth();
       this._bindBGMEvent();
     }
@@ -76,15 +83,7 @@ Component({
       backgroundAudioManager.onStop(() => {});
       backgroundAudioManager.onWaiting(() => {});
 
-      backgroundAudioManager.onCanplay(() => {
-        if (typeof backgroundAudioManager.duration != 'undefined') {
-          this._setTime();
-        } else {
-          setTimeout(() => {
-            this._setTime();
-          }, 1000);
-        }
-      });
+      backgroundAudioManager.onCanplay(() => {});
       backgroundAudioManager.onTimeUpdate(() => {
         if (isMoving) return;
         const currentTime = backgroundAudioManager.currentTime;
