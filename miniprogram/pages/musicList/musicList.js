@@ -1,5 +1,5 @@
 // miniprogram/pages/musicList/musicList.js
-let playListId = '';
+let playListId = "";
 let limit = 20;
 let star = 0;
 let musicList = [];
@@ -19,8 +19,9 @@ Page({
   onLoad: function(options) {
     limit = 20; //解决bug，换了页面后上面定义的不会重新初始变量
     star = 0;
+    lockReachBottom = false;
     playListId = options.playListId;
-    let obj = wx.getStorageSync('musicList' + playListId);
+    let obj = wx.getStorageSync("musicList" + playListId);
 
     if (obj) {
       musicList = obj.musicList;
@@ -48,13 +49,13 @@ Page({
   },
   getMusicList() {
     wx.showLoading({
-      title: '加载中...'
+      title: "加载中..."
     });
     wx.cloud
       .callFunction({
-        name: 'music',
+        name: "music",
         data: {
-          $url: 'musicList',
+          $url: "musicList",
           id: playListId
         }
       })
@@ -75,7 +76,7 @@ Page({
       });
   },
   _setMusicListStorage() {
-    wx.setStorageSync('musicList' + playListId, {
+    wx.setStorageSync("musicList" + playListId, {
       listInfo: this.data.listInfo,
       musicList
     });
